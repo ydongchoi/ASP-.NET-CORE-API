@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CompanyEmployees.Presentation.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/companies")]
     [ApiController]
     public class CompaniesController : ControllerBase
     {
