@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entities.Entities
+namespace Entities.Exceptions
 {
     public sealed class CompanyNotFoundException : NotFoundException
     {
