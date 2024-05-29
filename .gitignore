@@ -403,3 +403,6 @@ ASALocalRun/
 
 # Local History for Visual Studio
 .localhistory/
+
+# Log
+/CompanyEmployees/CompanyEmployees/internal_logs/internallog.txt
