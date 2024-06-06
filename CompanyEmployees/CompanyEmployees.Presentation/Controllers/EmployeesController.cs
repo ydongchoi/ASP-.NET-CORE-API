@@ -28,11 +28,11 @@ namespace CompanyEmployees.Presentation.Controllers
         {
             var linkParams = new LinkParameters(employeeParameters, HttpContext);
 
-            var pagedResult = await _service.EmployeeService.GetEmployeesAsync(companyId, linkParams, trackChanges: false);
+            var result = await _service.EmployeeService.GetEmployeesAsync(companyId, linkParams, trackChanges: false);
 
-            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(pagedResult.metaData));
+            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.metaData));
 
-            return Ok(pagedResult.employees);
+            return result.linkResponse.HasLinks ? Ok(result.linkResponse.LinkedEntities) : Ok(result.linkResponse.ShapedEntities);
         }
 
         [HttpGet("{id:guid}", Name = "GetEmployeeForCompany")]
