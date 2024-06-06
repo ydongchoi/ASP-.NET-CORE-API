@@ -61,7 +61,7 @@ namespace CompanyEmployees.Extensions
                 if (xmlOutputFormatter != null)
                 {
                     xmlOutputFormatter.SupportedMediaTypes
-                    .Add("applicaion/vnd.ydong.hateoas+json");
+                    .Add("application/vnd.ydong.hateoas+json");
                 }
             });
         }
