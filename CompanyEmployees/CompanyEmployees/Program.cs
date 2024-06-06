@@ -34,6 +34,7 @@ builder.Services.AddScoped<ValidationFilterAttribute>();
 builder.Services.AddScoped<IDataShaper<EmployeeDto>, DataShaper<EmployeeDto>>();
 
 builder.Services.AddCustomMediaType();
+builder.Services.AddScoped<ValidateMediaTypeAttribute>();
 
 builder.Services.AddControllers(config => {
     config.RespectBrowserAcceptHeader = true;
