@@ -39,6 +39,8 @@ builder.Services.AddScoped<IEmployeeLinks, EmployeeLinks>();
 
 builder.Services.ConfigureVersioning();
 
+builder.Services.ConfigureResponseCaching();
+
 builder.Services.AddControllers(config => {
     config.RespectBrowserAcceptHeader = true;
     config.ReturnHttpNotAcceptable = true;
@@ -67,6 +69,8 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
 });
 
 app.UseCors("CorsPolicy");
+
+app.UseResponseCaching();
 
 app.UseAuthorization();
 
