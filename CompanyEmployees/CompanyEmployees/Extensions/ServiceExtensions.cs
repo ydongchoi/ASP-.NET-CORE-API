@@ -53,6 +53,8 @@ namespace CompanyEmployees.Extensions
                 {
                     systemTextJsonOutputFormatter.SupportedMediaTypes
                     .Add("application/vnd.ydong.hateoas+json");
+                    systemTextJsonOutputFormatter.SupportedMediaTypes
+                    .Add("application/vnd.ydong.apiroot+json");
                 }
 
                 var xmlOutputFormatter = config.OutputFormatters
@@ -62,6 +64,8 @@ namespace CompanyEmployees.Extensions
                 {
                     xmlOutputFormatter.SupportedMediaTypes
                     .Add("application/vnd.ydong.hateoas+json");
+                    xmlOutputFormatter.SupportedMediaTypes
+                    .Add("application/vnd.ydong.apiroot+xml");
                 }
             });
         }
