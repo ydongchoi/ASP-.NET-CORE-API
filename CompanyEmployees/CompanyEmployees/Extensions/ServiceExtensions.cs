@@ -87,6 +87,14 @@ namespace CompanyEmployees.Extensions
             services.AddResponseCaching();
 
         public static void ConfigureHttpCacheHeaders(this IServiceCollection services) =>
-            services.AddHttpCacheHeaders();
+            services.AddHttpCacheHeaders(
+                (expirationOpt) =>{
+                    expirationOpt.MaxAge = 65;
+                    expirationOpt.CacheLocation = Marvin.Cache.Headers.CacheLocation.Private;
+                },
+                (validationOpt) =>
+                {
+                    validationOpt.MustRevalidate = true;
+                });
     }
 }
