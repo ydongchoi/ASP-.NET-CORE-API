@@ -39,12 +39,12 @@ namespace CompanyEmployees.Presentation.Controllers
 
         [HttpPost("login")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
-        public async Task<IActionResult> Authenticate([FromBody] UserForAuthenticationDto user)
+        public async Task<IActionResult> Authenticate([FromBody] UserForAuthenticationDto userForAuthentication)
         {
-            if (!await _service.AuthenticationService.ValidateUser(user))
+            if (!await _service.AuthenticationService.ValidateUser(userForAuthentication))
                 return Unauthorized();
 
-            var tokenDto = _service.AuthenticationService.CreateToken(populateExp: true);
+            var tokenDto = await _service.AuthenticationService.CreateToken(populateExp: true);
 
             return Ok(tokenDto);
         }
