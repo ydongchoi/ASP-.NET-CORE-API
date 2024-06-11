@@ -25,12 +25,12 @@ namespace Service
         private readonly ILoggerManager _logger;
         private readonly IMapper _mapper;
         private readonly UserManager<User> _userManager;
-        private readonly IOptions<JwtConfiguration> _configuration;
+        private readonly IOptionsSnapshot<JwtConfiguration> _configuration;
         private readonly JwtConfiguration _jwtConfiguration;
 
         private User? _user;
 
-        public AuthenticationService(ILoggerManager loger, IMapper mapper, UserManager<User> userManager, IOptions<JwtConfiguration> configuration)
+        public AuthenticationService(ILoggerManager loger, IMapper mapper, UserManager<User> userManager, IOptionsSnapshot<JwtConfiguration> configuration)
         {
             _logger = loger;
             _mapper = mapper;
