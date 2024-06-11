@@ -58,7 +58,7 @@ namespace Service
             return result;
         }
 
-        public async Task<TokenDto> CreateToken(bool poplulateExp)
+        public async Task<TokenDto> CreateToken(bool populateExp)
         {
             var signingCredentials = GetSigningCredentials();
             var claims = await GetClaims();
@@ -68,11 +68,12 @@ namespace Service
 
             _user.RefreshToken = refreshToken;
 
-            if (poplulateExp)
+            if (populateExp)
+            {
                 _user.RefreshTokenExpiryTime = DateTime.Now.AddDays(7);
+            }
 
             await _userManager.UpdateAsync(_user);
-
             var accessToken = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
 
             return new TokenDto(accessToken, refreshToken);
@@ -130,7 +131,7 @@ namespace Service
         private ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
         {
             var jwtSettings = _configuration.GetSection("JwtSettings");
-
+            
             var tokenValidationParameters = new TokenValidationParameters
             {
                 ValidateAudience = true,
@@ -144,10 +145,13 @@ namespace Service
 
             var tokenHandler = new JwtSecurityTokenHandler();
             SecurityToken securityToken;
-            var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out securityToken);
+
+            var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out
+           securityToken);
 
             var jwtSecurityToken = securityToken as JwtSecurityToken;
-            if(jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+
+            if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
             {
                 throw new SecurityTokenException("Invalid token");
             }
