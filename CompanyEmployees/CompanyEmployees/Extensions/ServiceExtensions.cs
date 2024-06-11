@@ -181,7 +181,20 @@ namespace CompanyEmployees.Extensions
                 s.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Title = "Ydong API",
-                    Version = "v1"
+                    Version = "v1",
+                    Description = "CompanyEmployees API by Ydong",
+                    TermsOfService = new Uri("https://example.com/terms"),
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Ydong",
+                        Email = "yeongdong.choi7@gmail.com",
+                        Url = new Uri("https://twitter.com/ydong.choi"),
+                    },
+                    License = new OpenApiLicense
+                    {
+                        Name = "CompanyEmployees API LICS",
+                        Url = new Uri("https://example.com/license"),
+                    }
                 });
                 s.SwaggerDoc("v2", new OpenApiInfo
                 {
