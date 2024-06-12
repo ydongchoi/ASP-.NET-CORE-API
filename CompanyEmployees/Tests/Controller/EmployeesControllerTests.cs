@@ -1,6 +1,9 @@
 ﻿using CompanyEmployees.Presentation.Controllers;
 using Entities.Exceptions;
+using Entities.Models;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Moq;
 using Service.Contracts;
 using Shared.DataTransferObjects;
@@ -21,7 +24,7 @@ namespace Tests.Controller
         public EmployeesControllerTests()
         {
             _mockEmployeeService = new Mock<IEmployeeService>();
-           
+
             _mockService = new Mock<IServiceManager>();
             _mockService
                 .SetupGet(m => m.EmployeeService)
@@ -190,8 +193,118 @@ namespace Tests.Controller
             var result = await _controller.UpdateEmployeeForCompany(companyId, id, employeeForUpdateDto);
 
             // Assert
-            Assert.IsType<NoContentResult>(result);  
+            Assert.IsType<NoContentResult>(result);
         }
 
+        [Fact]
+        public async Task PartiallyUpdateEmployeeForCompany_PatchDocNull_BadRequest()
+        {
+            // Arrange
+            var companyId = new Guid("C9D4C053-49B6-410C-BC78-2D54A9991870");
+            Guid id = new Guid("80ABBCA8-664D-4B20-B5DE-024705497D4A");
+            JsonPatchDocument<EmployeeForUpdateDto> patchDoc = null;
+
+            // Act
+            var result = await _controller.PartiallyUpdateEmployeeForCompany(companyId, id, patchDoc);
+
+            // Assert
+            Assert.IsType<BadRequestObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task PartiallyUpdateEmployeeForCompany_ModelStateInvalid_UnprocessableEntity()
+        {
+            // Arrange
+            var companyId = new Guid("C9D4C053-49B6-410C-BC78-2D54A9991870");
+            Guid id = new Guid("80ABBCA8-664D-4B20-B5DE-024705497D4A");
+            bool compTrackChanges = false; bool empTrackChanges = true;
+
+            var patchDoc = new JsonPatchDocument<EmployeeForUpdateDto>();
+            patchDoc.Replace(item => item.Name, "Yeongdong Choi");
+
+            var result = (
+                employeeToPatch: new EmployeeForUpdateDto
+                {
+                    Name = "Yeongdong",
+                    Age = 31,
+                    Position = "Administrator"
+                },
+                employeeEntitiy: new Employee
+                {
+                    CompanyId = companyId,
+                    Id = id,
+                    Name = "Yeongdong",
+                    Age = 31,
+                    Position = "Administrator"
+                });
+
+            _mockEmployeeService
+                .Setup(m => m.GetEmployeeForPatchAsync(companyId, id, compTrackChanges, empTrackChanges))
+                .ReturnsAsync(result);
+
+            var objectValidator = new Mock<IObjectModelValidator>();
+            objectValidator.Setup(o => o.Validate(It.IsAny<ActionContext>(),
+                                              It.IsAny<ValidationStateDictionary>(),
+                                              It.IsAny<string>(),
+                                              It.IsAny<Object>()));
+
+            _controller.ObjectValidator = objectValidator.Object;
+            _controller.ModelState.AddModelError("Name", "Required.");
+
+            // Act
+            var patchResult = await _controller.PartiallyUpdateEmployeeForCompany(companyId, id, patchDoc);
+
+            // Assert
+            Assert.IsType<UnprocessableEntityObjectResult>(patchResult);
+        }
+
+        [Fact]
+        public async Task PartiallyUpdateEmployeeForCompany_ModelStateInvalid_NoContent()
+        {
+            // Arrange
+            var companyId = new Guid("C9D4C053-49B6-410C-BC78-2D54A9991870");
+            Guid id = new Guid("80ABBCA8-664D-4B20-B5DE-024705497D4A");
+            bool compTrackChanges = false; bool empTrackChanges = true;
+
+            var patchDoc = new JsonPatchDocument<EmployeeForUpdateDto>();
+            patchDoc.Replace(item => item.Name, "Yeongdong Choi");
+
+            var result = (
+                employeeToPatch : new EmployeeForUpdateDto
+                {
+                    Name = "Yeongdong",
+                    Age = 31,
+                    Position = "Administrator"
+                },
+                employeeEntitiy : new Employee
+                {
+                    CompanyId = companyId,
+                    Id = id,
+                    Name = "Yeongdong",
+                    Age = 31,
+                    Position = "Administrator"
+                });
+
+            _mockEmployeeService
+                .Setup(m => m.GetEmployeeForPatchAsync(companyId, id, compTrackChanges, empTrackChanges))
+                .ReturnsAsync(result);
+
+            _mockEmployeeService
+                .Setup(m => m.SaveChangesForPatchAsync(result.employeeToPatch, result.employeeEntitiy))
+                .Returns(Task.CompletedTask);
+
+            var objectValidator = new Mock<IObjectModelValidator>();
+            objectValidator.Setup(o => o.Validate(It.IsAny<ActionContext>(),
+                                              It.IsAny<ValidationStateDictionary>(),
+                                              It.IsAny<string>(),
+                                              It.IsAny<Object>()));
+            _controller.ObjectValidator = objectValidator.Object;
+
+            // Act
+            var patchResult = await _controller.PartiallyUpdateEmployeeForCompany(companyId, id, patchDoc);
+
+            // Assert
+            Assert.IsType<NoContentResult>(patchResult);
+        }
     }
 }
