@@ -40,6 +40,7 @@ namespace CompanyEmployees.Presentation.Controllers
         public async Task<IActionResult> GetEmployeeForCompany(Guid companyId, Guid id)
         {
             var employee = await _service.EmployeeService.GetEmployeeAsync(companyId, id, trackChanges: false);
+            
             return Ok(employee);
         }
 

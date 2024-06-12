@@ -1,4 +1,5 @@
 ﻿using CompanyEmployees.Presentation.Controllers;
+using Entities.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Service.Contracts;
@@ -110,6 +111,25 @@ namespace Tests.Controller
 
             // Assert
             Assert.IsType<CreatedAtRouteResult>(result);
+        }
+
+        [Fact]
+        public async Task DeleteEmployeeForCompany_ExistingIdPassed_NoContent()
+        {
+            // Arrange
+            Guid companyId = new Guid("C9D4C053-49B6-410C-BC78-2D54A9991870");
+            Guid id = new Guid("80ABBCA8-664D-4B20-B5DE-024705497D4A");
+            bool trackChanges = false;
+
+            _mockEmployeeService
+                .Setup(m => m.DeleteEmployeeForCompanyAsync(companyId, id, trackChanges))
+                .Returns(Task.CompletedTask);
+
+            // Act
+            var result = await _controller.DeleteEmployeeForCompany(companyId, id);
+
+            // Assert
+            Assert.IsType<NoContentResult>(result);
         }
 
     }
