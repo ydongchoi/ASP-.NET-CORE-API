@@ -19,7 +19,6 @@ namespace Tests.Controller
 
         public EmployeesControllerTests()
         {
-
             _mockEmployeeService = new Mock<IEmployeeService>();
            
             _mockService = new Mock<IServiceManager>();
@@ -49,7 +48,68 @@ namespace Tests.Controller
             var result = await _controller.GetEmployeeForCompany(companyId, id);
 
             // Assert
-            var actionResult = Assert.IsType<OkObjectResult>(result);
+            Assert.IsType<OkObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task CreateEmployeeForCompany_EmployeeNull_BadRequest()
+        {
+            // Arrange
+            Guid companyId = new Guid("C9D4C053-49B6-410C-BC78-2D54A9991870");
+            EmployeeForCreationDto employeeForCreation = null;
+
+            // Act
+            var result = await _controller.CreateEmployeeForCompany(companyId, employeeForCreation);
+
+            // Assert
+            Assert.IsType<BadRequestObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task CreateEmployeeForCompany_ModelStateInValid_UnprocessableEntity()
+        {
+            // Arrange
+            Guid companyId = new Guid("C9D4C053-49B6-410C-BC78-2D54A9991870");
+            EmployeeForCreationDto employeeForCreation = new EmployeeForCreationDto
+            {
+                Age = 29,
+                Position = "Software Developer"
+            };
+
+            _controller.ModelState.AddModelError("Name", "Required");
+
+            // Act
+            var result = await _controller.CreateEmployeeForCompany(companyId, employeeForCreation);
+
+            // Assert
+            Assert.IsType<UnprocessableEntityObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task CreateEmployeeForCompany_RequestEligibleEmployeeForCreation_CreatedAtRoute()
+        {
+            // Arrange
+            Guid companyId = Guid.NewGuid();
+            EmployeeForCreationDto employeeForCreation = new EmployeeForCreationDto
+            {
+                Name = "Yeongdong",
+                Age = 31,
+                Position = "Software Developer"
+            };
+            bool trackChanges = false;
+
+            _mockEmployeeService
+                .Setup(
+                    m => m.CreateEmployeeForCompanyAsync(companyId, employeeForCreation, trackChanges))
+                .ReturnsAsync(
+                    new EmployeeDto(Guid.NewGuid(), employeeForCreation.Name, employeeForCreation.Age, employeeForCreation.Position)
+                );
+
+            // Act
+            var result = await _controller.CreateEmployeeForCompany(companyId, employeeForCreation);
+
+            // Assert
+            Assert.IsType<CreatedAtRouteResult>(result);
         }
 
     }
