@@ -39,7 +39,14 @@ namespace Tests.Mocks
                 .ReturnsAsync(() => new ApiOkResponse<IEnumerable<CompanyDto>>(companies));
 
             mock.Setup(m => m.GetCompanyAsync(It.IsAny<Guid>(), It.IsAny<bool>()))
-                .ReturnsAsync((Guid id, bool trackChanges) => new ApiOkResponse<CompanyDto>(companies.FirstOrDefault(o => o.Id == id)));
+                .ReturnsAsync((Guid id, bool trackChanges) => {
+                    var company = companies.FirstOrDefault(o => o.Id == id);
+
+                    if (company is null)
+                        return new CompanyNotFoundResponse(id);
+
+                    return new ApiOkResponse<CompanyDto>(company);
+                });
 
             mock.Setup(m => m.CreateCompanyAsync(It.IsAny<CompanyForCreationDto>()))
                 .Callback(() => { return; });
