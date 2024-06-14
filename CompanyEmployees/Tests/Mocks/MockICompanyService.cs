@@ -1,4 +1,5 @@
 ﻿using Entities.Models;
+using Entities.Responses;
 using Moq;
 using Service.Contracts;
 using Shared.DataTransferObjects;
@@ -35,10 +36,10 @@ namespace Tests.Mocks
 
             // Setup the mock
             mock.Setup(m => m.GetAllCompaniesAsync(It.IsAny<bool>()))
-                .ReturnsAsync(() => companies);
+                .ReturnsAsync(() => new ApiOkResponse<IEnumerable<CompanyDto>>(companies));
 
             mock.Setup(m => m.GetCompanyAsync(It.IsAny<Guid>(), It.IsAny<bool>()))
-                .ReturnsAsync((Guid id, bool trackChanges) => companies.FirstOrDefault(o => o.Id == id));
+                .ReturnsAsync((Guid id, bool trackChanges) => new ApiOkResponse<CompanyDto>(companies.FirstOrDefault(o => o.Id == id)));
 
             mock.Setup(m => m.CreateCompanyAsync(It.IsAny<CompanyForCreationDto>()))
                 .Callback(() => { return; });
