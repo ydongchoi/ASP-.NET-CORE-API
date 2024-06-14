@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entities.Models
+namespace Entities.Responses
 {
     public abstract class ApiBaseResponse
     {
