@@ -49,7 +49,12 @@ namespace Tests.Mocks
                 });
 
             mock.Setup(m => m.CreateCompanyAsync(It.IsAny<CompanyForCreationDto>()))
-                .Callback(() => { return; });
+                .ReturnsAsync((CompanyForCreationDto companyForCreationDto) => new CompanyDto
+                {
+                    Id = Guid.NewGuid(),
+                    Name = companyForCreationDto.Name,
+                    FullAddress = string.Join(" ", companyForCreationDto.Address, companyForCreationDto.Country)
+                });
 
             mock.Setup(m => m.GetByIdsAsync(It.IsAny<IEnumerable<Guid>>(), It.IsAny<bool>()))
                 .ReturnsAsync((IEnumerable<Guid> ids, bool trackChanges) =>
@@ -58,14 +63,29 @@ namespace Tests.Mocks
                 });
 
             mock.Setup(m => m.CreateCompanyCollectionAsync(It.IsAny<IEnumerable<CompanyForCreationDto>>()))
-                .Callback(() => { return; });
+                .ReturnsAsync((IEnumerable<CompanyForCreationDto> companyCollection) =>
+                {
+                    List<CompanyDto> companyDtoList = new List<CompanyDto>();
+
+                    foreach(var company in companyCollection)
+                    {
+                        companyDtoList.Add(new CompanyDto()
+                        {
+                            Id = Guid.NewGuid(),
+                            Name = company.Name,
+                            FullAddress = String.Join(" ", company.Address, company.Country)
+                        });
+                    }
+                    var ids = string.Join(",", companyDtoList.Select(c => c.Id));
+
+                    return (companies: companyDtoList, ids: ids);
+                });
 
             mock.Setup(m => m.DeleteCompanyAsync(It.IsAny<Guid>(), It.IsAny<bool>()))
                 .Callback(() => { return; });
 
             mock.Setup(m => m.UpdateCompanyAsync(It.IsAny<Guid>(), It.IsAny<CompanyForUpdateDto>(), It.IsAny<bool>()))
                 .Callback(() => { return; });
-
             return mock;
         }
     }
