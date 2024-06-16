@@ -15,6 +15,7 @@ namespace Tests.Mocks
             var mock = new Mock<IServiceManager>();
             var employeeServiceMock = MockIEmployeeService.GetMock();
             var companyServiceMock = MockICompanyService.GetMock();
+            var authenticationServiceMock = MockIAuthenticationService.GetMock();
 
             // Setup the mock
             mock.Setup(m => m.CompanyService)
@@ -22,7 +23,7 @@ namespace Tests.Mocks
             mock.Setup(m => m.EmployeeService)
                 .Returns(() => employeeServiceMock.Object);
             mock.Setup(m => m.AuthenticationService)
-                .Returns(new Mock<IAuthenticationService>().Object);
+                .Returns(() => authenticationServiceMock.Object);
 
             return mock;
         }
