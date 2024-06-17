@@ -29,7 +29,7 @@ namespace Tests.Mocks
                 new Company()
                 {
                     Id = Guid.Parse("02946162-6D18-4AED-45D6-08DC81B4C1C5"),
-                    Name = "Branding Ltd,
+                    Name = "Branding Ltd",
                     Address = "255 Main Street, k 334",
                     Country = "USA"
                 }
@@ -40,13 +40,13 @@ namespace Tests.Mocks
                 .ReturnsAsync(() => companies);
 
             mock.Setup(m => m.GetCompanyAsync(It.IsAny<Guid>(), It.IsAny<bool>()))
-                .ReturnsAsync((Guid id) =>
+                .ReturnsAsync((Guid id, bool trackChanges) =>
                 {
                     return companies.FirstOrDefault(c => c.Id == id);
                 });
 
             mock.Setup(m => m.GetByIdsAsync(It.IsAny<IEnumerable<Guid>>(), It.IsAny<bool>()))
-                .ReturnsAsync((IEnumerable<Guid> ids) =>
+                .ReturnsAsync((IEnumerable<Guid> ids, bool trackChanges) =>
                 {
                     List<Company> companiesWithId = new List<Company>();
 
