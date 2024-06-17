@@ -13,10 +13,11 @@ namespace Tests.Mocks
         public static Mock<IRepositoryManager> GetMock()
         {
             var mock = new Mock<IRepositoryManager>();
+            var companyRepositoryMock = MockICompanyRepository.GetMock();
 
             // Set up the mock
             mock.Setup(m => m.Company)
-                .Returns(() => new Mock<ICompanyRepository>());
+                .Returns(() => companyRepositoryMock.Object);
 
             mock.Setup(m => m.Employee)
                 .Returns(() => new Mock<IEmployeeRepository>());
