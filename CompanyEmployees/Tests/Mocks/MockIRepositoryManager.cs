@@ -20,7 +20,7 @@ namespace Tests.Mocks
                 .Returns(() => companyRepositoryMock.Object);
 
             mock.Setup(m => m.Employee)
-                .Returns(() => new Mock<IEmployeeRepository>());
+                .Returns(() => new Mock<IEmployeeRepository>().Object);
 
             mock.Setup(m => m.SaveAsync())
                 .Callback(() =>
