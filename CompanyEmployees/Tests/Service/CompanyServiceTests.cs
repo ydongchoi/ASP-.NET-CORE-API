@@ -204,6 +204,18 @@ namespace Tests.Service
             Assert.ThrowsAsync<CompanyNotFoundException>(async () => await _service.DeleteCompanyAsync(companyId, trackChanges));
         }
 
+        [Fact]
+        public async Task UpdateCompanyAsync_NonExistingCompanyId_CompanyNotFoundException()
+        {
+            // Arrange
+            Guid companyId = new Guid("43585C00-2346-4FEA-AA74-08DC81A68D23");
+            var companyForUpdate = new CompanyForUpdateDto("Happy", "Surrey", "Canada", null);
+            bool trackChanges = false;
+
+            // Act & Assert
+            Assert.ThrowsAsync<CompanyNotFoundException>(async () => await _service.UpdateCompanyAsync(companyId, companyForUpdate, trackChanges));
+        }
+
         public IMapper GetMapper()
         {
             var mapplingProfile = new MappingProfile();
