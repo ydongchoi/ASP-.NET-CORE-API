@@ -156,6 +156,43 @@ namespace Tests.Service
             Assert.NotNull(result as CompanyDto);
         }
 
+        [Fact]
+        public async Task CreateCompanyCollectionAsync_Companies_ThenCreatedResults()
+        {
+            // Arrange
+            var companies = new List<CompanyForCreationDto>(){
+                new CompanyForCreationDto(){
+                    Name = "Happy",
+                    Address = "Surrey",
+                    Country = "Canada"
+                },
+                new CompanyForCreationDto(){
+                    Name = "Exciting",
+                    Address = "Vancouver",
+                    Country = "Canada"
+                }
+            };
+
+            // Act
+            var result = await _service.CreateCompanyCollectionAsync(companies);
+
+            // Assert
+            Assert.NotNull(result.companies);
+            Assert.NotNull(result.ids);
+            Assert.IsAssignableFrom<IEnumerable<CompanyDto>>(result.companies);
+            Assert.IsAssignableFrom<string>(result.ids);
+        }
+
+        [Fact]
+        public async Task CreateCompanyCollectionAsync_NullCompanies_CompanyCollectionBadRequest()
+        {
+            // Arrange
+            List<CompanyForCreationDto> companies = null;
+
+            // Act & Assert
+            Assert.ThrowsAsync<CompanyCollectionBadRequest>(async () => await _service.CreateCompanyCollectionAsync(companies));
+        }
+
         public IMapper GetMapper()
         {
             var mapplingProfile = new MappingProfile();
