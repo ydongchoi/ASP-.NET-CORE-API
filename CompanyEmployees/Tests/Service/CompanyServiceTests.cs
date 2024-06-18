@@ -121,7 +121,7 @@ namespace Tests.Service
         }
 
         [Fact]
-        public async Task GetByIdsAsync_BadIds_Companies()
+        public async Task GetByIdsAsync_BadIds_CollectionByIdsBadRequestException()
         {
             // Arrange
             var ids = new List<Guid>()
@@ -133,6 +133,27 @@ namespace Tests.Service
 
             // Act & Assert
             Assert.ThrowsAsync<CollectionByIdsBadRequestException>(async () => await _service.GetByIdsAsync(ids, trackChanges));
+        }
+
+        [Fact]
+        public async Task CreateCompanyAsync_Company_ThenCreatedReturns()
+        {
+            // Arrange
+            var company = new CompanyForCreationDto()
+            {
+                Name = "Happy",
+                Address = "Surrey",
+                Country = "Canada"
+            };
+
+            // Act
+            var result = await _service.CreateCompanyAsync(company);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.IsType<CompanyDto>(result);
+            Assert.IsAssignableFrom<CompanyDto>(result);
+            Assert.NotNull(result as CompanyDto);
         }
 
         public IMapper GetMapper()
