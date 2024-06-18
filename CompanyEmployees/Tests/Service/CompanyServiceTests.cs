@@ -2,6 +2,7 @@
 using CompanyEmployees;
 using CompanyEmployees.Presentation.Extensions;
 using Contracts;
+using Entities.Exceptions;
 using Entities.Models;
 using Entities.Responses;
 using LoggerService;
@@ -85,6 +86,53 @@ namespace Tests.Service
             // Assert
             Assert.NotNull(result);
             Assert.IsType<CompanyNotFoundResponse>(result);
+        }
+
+        [Fact]
+        public async Task GetByIdsAsync_ExisitingIds_Companies()
+        {
+            // Arrange
+            var ids = new List<Guid>()
+            {
+                new Guid("43585C00-2346-4FEA-AA74-08DC81A68D90"),
+                new Guid("02946162-6D18-4AED-45D6-08DC81B4C1C5")
+            };
+            bool trackChanges = false;
+
+            // Act
+            var result = await _service.GetByIdsAsync(ids, trackChanges);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.IsType<List<CompanyDto>>(result);
+            Assert.IsAssignableFrom<List<CompanyDto>>(result);
+            Assert.NotEmpty(result as List<CompanyDto>);
+        }
+
+        [Fact]
+        public async Task GetByIdsAsync_NullIds_IdPrametersBadRequestException()
+        {
+            // Arrange
+            List<Guid> ids = null;
+            bool trackChanges = false;
+
+            // Act & Assert
+            Assert.ThrowsAsync<IdParametersBadRequestException>(async () => await _service.GetByIdsAsync(ids, trackChanges));
+        }
+
+        [Fact]
+        public async Task GetByIdsAsync_BadIds_Companies()
+        {
+            // Arrange
+            var ids = new List<Guid>()
+            {
+                new Guid("43585C00-2346-4FEA-AA74-08DC81A68D90"),
+                new Guid("02946162-6D18-4AED-45D6-08DC81B4C1F0")
+            };
+            bool trackChanges = false;
+
+            // Act & Assert
+            Assert.ThrowsAsync<CollectionByIdsBadRequestException>(async () => await _service.GetByIdsAsync(ids, trackChanges));
         }
 
         public IMapper GetMapper()

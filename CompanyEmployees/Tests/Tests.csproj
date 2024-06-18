@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="coverlet.collector" Version="6.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
     <PackageReference Include="Moq" Version="4.20.70" />
@@ -19,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CompanyEmployees.Presentation\CompanyEmployees.Presentation.csproj" />
+    <ProjectReference Include="..\CompanyEmployees\CompanyEmployees.csproj" />
     <ProjectReference Include="..\Contracts\Contracts.csproj" />
     <ProjectReference Include="..\Service.Contracts\Service.Contracts.csproj" />
   </ItemGroup>
