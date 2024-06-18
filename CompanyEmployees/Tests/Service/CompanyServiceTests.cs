@@ -193,6 +193,17 @@ namespace Tests.Service
             Assert.ThrowsAsync<CompanyCollectionBadRequest>(async () => await _service.CreateCompanyCollectionAsync(companies));
         }
 
+        [Fact]
+        public async Task DeleteCompanyAsync_NonExistingCompanyId_CompanyNotFoundException()
+        {
+            // Arrange
+            Guid companyId = new Guid("43585C00-2346-4FEA-AA74-08DC81A68D23");
+            bool trackChanges = false;
+
+            // Act & Assert
+            Assert.ThrowsAsync<CompanyNotFoundException>(async () => await _service.DeleteCompanyAsync(companyId, trackChanges));
+        }
+
         public IMapper GetMapper()
         {
             var mapplingProfile = new MappingProfile();
