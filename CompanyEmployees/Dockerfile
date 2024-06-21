@@ -12,7 +12,7 @@ RUN dotnet publish ./CompanyEmployees/CompanyEmployees.csproj -o /publish/
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /publish
 COPY --from=build-image /publish .
-ENV ASPNETCORE_URLS=https://+:5001;http://+:5000
-ENV ASPNETCORE_HTTPS_PORT=8081
+ENV ASPNETCORE_URLS=https://+:5002;http://+:5001
+ENV ASPNETCORE_HTTPS_PORT=8082
 
 ENTRYPOINT ["dotnet", "CompanyEmployees.dll"]
