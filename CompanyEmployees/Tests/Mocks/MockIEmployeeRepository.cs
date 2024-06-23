@@ -1,4 +1,5 @@
 ﻿using Contracts;
+using Entities.Models;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,12 @@ namespace Tests.Mocks
             var mock = new Mock<IEmployeeRepository>();
 
             // Set up the mock
+            mock.Setup(m => m.CreateEmployeeForCompany(It.IsAny<Guid>(), It.IsAny<Employee>()))
+                .Callback(() => { return; });
+                
+            mock.Setup(m => m.DeleteEmployee(It.IsAny<Employee>()))
+                .Callback(() =>
+                { return; });
 
             return mock;
         }
