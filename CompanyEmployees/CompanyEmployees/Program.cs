@@ -10,6 +10,7 @@ using Service.DataShaping;
 using Shared.DataTransferObjects;
 using CompanyEmployees.Utility;
 using AspNetCoreRateLimit;
+using Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -101,6 +102,7 @@ app.UseSwaggerUI(s =>
 
 app.MapControllers();
 
+app.MigrateDatabase();
 app.Run();
 
 NewtonsoftJsonPatchInputFormatter GetJsonPatchInputFormatter() =>
