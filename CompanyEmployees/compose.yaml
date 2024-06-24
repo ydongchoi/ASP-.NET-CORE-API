@@ -1,0 +1,27 @@
+version: '3.0'
+
+services:
+  db:
+    image: mcr.microsoft.com/mssql/server
+    ports:
+      - "1433:1433"
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=yourStrong(!)Password
+    restart: always
+  companyemployees:
+    depends_on:
+      - db
+    image: ${DOCKER_REGISTRY-}companyemployees:runtime
+    ports:
+      - "8081:5001"
+      - "8082:5002"
+    environment: 
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=passwordyoucreated
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+      - SECRET=YdongAPISecret123!!!YdongAPISecret123
+      - ASPNETCORE_URLS=https://+:5002;http://+:5001
+    volumes:
+      - ~/.aspnet/https:/https
+    build:
+      context: .    
