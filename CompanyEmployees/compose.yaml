@@ -17,6 +17,7 @@ services:
       - "8081:5001"
       - "8082:5002"
     environment: 
+      - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_Kestrel__Certificates__Default__Password=passwordyoucreated
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
       - SECRET=YdongAPISecret123!!!YdongAPISecret123
