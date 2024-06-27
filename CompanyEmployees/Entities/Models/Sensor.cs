@@ -23,6 +23,6 @@ namespace Entities.Models
         [ForeignKey(nameof(Equipment))]
         public Guid EquipmentId { get; set; }
 
-        public Equipment? equipment { get; set; }
+        public Equipment? Equipment { get; set; }
     }
 }
