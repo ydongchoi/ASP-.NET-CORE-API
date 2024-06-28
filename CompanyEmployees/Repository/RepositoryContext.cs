@@ -19,6 +19,8 @@ namespace Repository
             modelBuilder.ApplyConfiguration(new CompanyConfiguration());
             modelBuilder.ApplyConfiguration(new EmployeeConfiguration());
             modelBuilder.ApplyConfiguration(new RoleConfiguration());
+            modelBuilder.ApplyConfiguration(new EquipmentConfiguration());
+            modelBuilder.ApplyConfiguration(new SensorConfiguration());
         }
 
         public DbSet<Company>? Companies { get; set; }
