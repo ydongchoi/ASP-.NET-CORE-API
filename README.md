@@ -6,5 +6,6 @@ REST API using ASP .NET CORE Framework
 ![image](https://github.com/ydongchoi/ASP-.NET-CORE-API/assets/84194034/3057954a-8150-4f37-bd2c-bc85b5bfd496)
 
 ## Domain
-![Domain](https://github.com/ydongchoi/ASP-.NET-CORE-API/assets/84194034/079ba7b0-d529-40ce-b65b-bfde4e992388)
+![image](https://github.com/ydongchoi/ASP-.NET-CORE-API/assets/84194034/60dc7404-a70e-4232-a2c1-3144bf7241a7)
+
 
