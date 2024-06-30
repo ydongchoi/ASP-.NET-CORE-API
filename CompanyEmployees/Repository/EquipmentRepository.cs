@@ -29,5 +29,6 @@ namespace Repository
             await FindByCondition(x => ids.Contains(x.Id), trackChanges)
             .ToListAsync();
 
+        public async Task CreateEquipment(Equipment equipment) => Create(equipment);
     }
 }
