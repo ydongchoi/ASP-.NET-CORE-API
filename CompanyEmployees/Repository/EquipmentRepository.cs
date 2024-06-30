@@ -25,5 +25,9 @@ namespace Repository
             await FindByCondition(e => e.Id.Equals(equipmentId), trackChanges)
             .SingleOrDefaultAsync();
 
+        public async Task<IEnumerable<Equipment>> GetByIdsAsync(IEnumerable<Guid> ids, bool trackChanges) =>
+            await FindByCondition(x => ids.Contains(x.Id), trackChanges)
+            .ToListAsync();
+
     }
 }
