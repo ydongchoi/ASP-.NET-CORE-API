@@ -1,5 +1,10 @@
 # ASP-.NET-CORE-API
 ## Description
+This project is a REST API project that works with React-Web Project. You can see my React-Web project below the link.
+
+Link : https://github.com/ydongchoi/React-Web
+
+## Description
 REST API using ASP .NET CORE Framework
 
 ## Architecture - Onion Architecture
