@@ -12,7 +12,7 @@ namespace CompanyEmployees.Presentation.Controllers
 {
     public class ApiControllerBase : ControllerBase
     {
-        public IActionResult ProcessError(ApiBaseResponse baseResponse)
+        protected IActionResult ProcessError(ApiBaseResponse baseResponse)
         {
             return baseResponse switch
             {
