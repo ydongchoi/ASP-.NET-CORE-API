@@ -9,7 +9,7 @@ namespace Shared.DataTransferObjects
 {
     public abstract record SensorForManipulationDto
     {
-        [Required(ErrorMessage = "Sensor name is a required field.")]]
+        [Required(ErrorMessage = "Sensor name is a required field.")]
         public string Name { get; init; }
 
         [Required(ErrorMessage = "Sensor Type is a required field.")]

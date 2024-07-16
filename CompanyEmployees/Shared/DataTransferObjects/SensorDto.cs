@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace Shared.DataTransferObjects
 {
-    public record SensorDto(Guid Id, string Name, string Type,);
+    public record SensorDto(Guid Id, string Name, string Type);
 }
