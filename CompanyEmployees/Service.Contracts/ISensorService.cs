@@ -10,9 +10,9 @@ namespace Service.Contracts
 {
     public interface ISensorService
     {
-        Task<ApiBaseResponse> GetAllSensorsAsync(Guid equipmentId, bool trackChanges);
+        Task<ApiBaseResponse> GetAllSensorsForEquipmentAsync(Guid equipmentId, bool trackChanges);
         
-        Task<ApiBaseResponse> GetSensorAsync(Guid equipmentId, Guid id, bool trackChanges);
+        Task<ApiBaseResponse> GetSensorForEquipmentAsync(Guid equipmentId, Guid id, bool trackChanges);
 
         Task<SensorDto> CreateSensorForEquipmentAsync(Guid equipmentId, SensorForCreationDto sensor,bool trackChanges);
 
